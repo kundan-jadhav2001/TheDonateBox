@@ -1,0 +1,203 @@
+html{
+    scroll-behavior: smooth;
+}
+body{
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', 'Regular 400';
+}
+.custom-nav{
+    /* background-color: #0579f5; */
+    background-color: #fecc41;
+    height: auto;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border: 1px solid gray;
+    /* border-radius: 10px; */
+    /* margin: 0 10%; */
+    width: 100%; 
+}
+.custom-nav a, .dropdown-item{
+    color: black;
+    /* padding: 0 10%; */
+}
+.middlebanner img{
+    height: auto;
+    width: 50%;
+}
+
+.banner{
+    height: 80vh;
+    width: auto;
+}
+.main-sec{
+    display: flex;
+    justify-content: center;
+    /* flex-direction: row-reverse; */
+    /* width: auto; */
+}
+.sub-head{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    /* color: white; */
+    position: absolute;
+    margin: 16% 0;
+    width: 100%;
+}
+.sub-image img{
+    position: absolute;
+    height: auto;
+    width: 42%;
+    margin: 65px -45%;
+    border-radius: 10%;
+}
+.sub-head h1{
+    font-size: 100px;
+    font-weight: 700;
+    color: #fbcd51;
+}
+.sub-head p{
+    font-size: 25px;
+    color: white;
+    text-align: left;
+}
+.background{
+    background: rgba(0, 0, 0, 0.7) url("https://www.daysoftheyear.com/cdn-cgi/image/dpr=1%2Cf=auto%2Cfit=cover%2Cheight=675%2Cq=85%2Cwidth=1200/wp-content/uploads/international-day-of-charity-1.jpg");
+    /* height: 550px; */
+    background-size: cover;
+    background-blend-mode: darken;
+}
+
+/* --------------------------------------------------------------- */
+/* About Section */
+.about-main{
+    margin: 30px;
+    padding: 20px;
+    background-color: #fff3d5;
+    border: 2px solid gray;
+    border-radius: 10px;
+}
+.about-main h2{
+    text-align: center;
+    font-weight: 600;
+}
+.about{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    padding: 3%;
+}
+.image img{
+    width: auto;
+    height: auto;
+}
+.content h5{
+    display: flex;
+    align-items: center;
+    padding: 10px 40px;
+}
+.v-line{
+    border: 1px solid black;
+    height: 500px;
+}
+hr{
+    border: 1px solid black;
+    width: 60%;
+}
+
+
+/* ------------------------------------------- */
+/* SignUp page */
+
+.sign-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 10px 25%;
+    padding: 10px;
+    border: 2px solid gray;
+    border-radius: 10px;
+    background: rgba(254, 204, 65, 0.7);
+}
+.sign-main h1{
+    text-align: center;
+}
+.signup div{
+    display: flex;
+    flex-direction: column;
+}
+label{
+    font-weight: 600;
+}
+input{
+    padding: 10px 200px;
+    border: 2px solid gray;
+    border-radius: 10px;
+    margin: 10px 0;
+}
+.sign-hr{
+    width: 90%;
+}
+.body-main{
+    background: rgba(0, 0, 0, 0.7) url("https://www.daysoftheyear.com/cdn-cgi/image/dpr=1%2Cf=auto%2Cfit=cover%2Cheight=675%2Cq=85%2Cwidth=1200/wp-content/uploads/international-day-of-charity-1.jpg");
+    background-size: cover;
+    background-blend-mode: darken;
+    /* margin: -10px; */
+    padding: 20px;
+}
+
+
+/* ------------------------------- */
+/* Login */
+
+.login-body-main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 93vh;
+    width: auto;
+}
+
+/* -------------------------------------------- */
+/* Responsive */
+
+@media only screen and (max-width: 600px) {
+    .sub-head h1{
+        font-size: 75px;
+        margin: 20px;
+    }
+    .sub-head p{
+        font-size: 17px;
+        margin-right: 20px;
+    }
+    .about{
+        flex-direction: column;
+    }
+    .v-line{
+        display: none;
+    }
+    .image img{
+        width: 100%;
+    }
+    .about-main{
+        margin: 12px;
+        padding: 0;
+    }
+    .content h5{
+        font-size: 17px;
+        padding: 15px 10px;
+        text-align: justify;
+    }
+    /* ----------------------------------------- */
+    /* SignUp */
+    .sign-main{
+        margin: 0;
+    }
+    input{
+        padding: 7px 100px;
+    }
+}

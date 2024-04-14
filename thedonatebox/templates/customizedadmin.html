@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>admin</title>
+</head>
+<body>
+    <h1>Admin Panel</h1>
+    {% for data in tempArr %}
+    <div class="card_container">
+            <div class="card">
+                    <div>
+                        <img src="{{data.image}}" style="width: 30%; height: auto;"/>
+                    </div>
+            </div>
+            <div class="content">
+                <div>
+                    <h2>{{data.name}}</h2>
+                </div>
+                <div>
+                    <p>{{data.address}}</p>
+                </div>
+                <div>
+                    <p>{{data.phone}}</p>
+                </div>
+                
+            </div>
+
+    </div>
+    {% endfor %}
+</body>
+</html>

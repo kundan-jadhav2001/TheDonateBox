@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock style %}
+
+
+{% block body %}
+
+
+  <!-- ----------------------------------------------------------- -->
+  <section class="banner background">
+    <div class="main-sec">
+      <div class="sub-head">
+        <h1>The Donate Box</h1>
+        <p>Elevate Giving with TheDonateBox</p>
+        <a href="{% url 'contact' %}" class="btn btn-warning">Donate Now!</a>
+      </div>
+      <!-- <div class="head-content">
+        <p>Welcome to our donation platform! Join us in making a difference. Your support empowers change and brings hope to those in need. Together, we create a brighter tomorrow.</p>
+      </div> -->
+        
+    </div>
+      <!-- <img src="./img4.jpg" alt="Please donate"> -->
+
+    </div>
+  </section>
+
+  <!-- ----------------------------------------------------------------- -->
+  <!-- About Section -->
+  <div id="about">
+    <div class="about-main" id="">
+      <!-- <h2>About The Donate Box</h2> -->
+      <section class="about">
+        <div class="image">
+          <img src="{% static 'images/about.png' %}" alt="About">
+        </div>
+        <div class="v-line"></div>
+        <div class="content">
+          <div class="">
+            <h2>About The Donate Box</h2>
+          </div>
+          <hr>
+          <h5>Welcome to our donation platform! Join us in making a difference. Your support empowers change and brings hope to those in need. Together, we create a brighter tomorrow.</h5>
+          <h5>At our core, we're driven by compassion and a shared vision of a better world. Our organization is dedicated to making a meaningful impact through your donations. With transparency, integrity, and a commitment to our mission, we channel your contributions to support causes that matter most. Together, we strive for positive change and a brighter future for all.</h5>
+          <a href="accounts/login" class="btn btn-success mx-5">Donate Now!</a>
+        </div>
+      </section>
+    </div>
+  </div>
+
+
+{% endblock body %}
