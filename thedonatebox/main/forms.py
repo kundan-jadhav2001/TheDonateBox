@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.forms import fields, widgets
 from django.shortcuts import render
 from django.utils.translation import gettext, gettext_lazy as gt
-from .models import Customer
+# from .models import Customer
 
 
 
@@ -38,14 +38,14 @@ class LoginForm(AuthenticationForm):
     
 
 
-class CustomerForm(forms.Form):
-    class Meta:
-        model = Customer
-        fields = ['name', 'phone', 'address', 'item', 'image']
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'phone': forms.TextInput(attrs={'class': 'form-control'}),
-            'address': forms.TextInput(attrs={'class': 'form-control'}),
-            'item': forms.TextInput(attrs={'class': 'form-control'}),
-            'image': forms.ImageField(),
-        }
+# class CustomerForm(forms.Form):
+#     class Meta:
+#         model = Customer
+#         fields = ['name', 'phone', 'address', 'item', 'image']
+#         widgets = {
+#             'name': forms.TextInput(attrs={'class': 'form-control'}),
+#             'phone': forms.TextInput(attrs={'class': 'form-control'}),
+#             'address': forms.TextInput(attrs={'class': 'form-control'}),
+#             'item': forms.TextInput(attrs={'class': 'form-control'}),
+#             'image': forms.ImageField(),
+#         }

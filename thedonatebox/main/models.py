@@ -10,14 +10,10 @@ class userinfo(models.Model):
     phone = models.IntegerField()
     password = models.CharField(max_length=200)
 
-    def __str__(self):
-        return self.username
 
-class Customer(models.Model):
+class contact(models.Model):
     name = models.ForeignKey(userinfo, on_delete=models.SET_NULL, null=True)
     address = models.CharField(max_length=500)
     item = models.CharField(max_length=500)
     image = models.ImageField(upload_to='images')
 
-    def _str__(self):
-        return self.name, self.item

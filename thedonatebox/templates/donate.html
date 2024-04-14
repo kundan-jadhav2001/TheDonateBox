@@ -1,8 +1,8 @@
-{% extends 'app/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block style %}
-<link rel="stylesheet" href="{% static 'app/css/style.css' %}">
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 {% if msg %}
 <script>
     alert("{{msg}}");
@@ -13,23 +13,24 @@
 {% block body %}
 <h1 class="login-header container my-4 text-center">Contact Us!</h1>
 
-<form class="row mx-5 container custom-form-2" method="POST">
-    {% csrf_token %}
+<form class="row mx-5 container custom-form-2" method="POST" action="contact">{% csrf_token %}
     {% for message in messages %}
-    <p {% if message.tags %} class="alert alert-{{message.tags}} mb-5 {% endif %}">{{ message }}: <a
-            href="{% url 'home' %}" class="btn btn-primary">Home</a></p>
+    <p {% if message.tags %} class="alert alert-{{message.tags}} mb-5 {% endif %}">{{ message }}
     {% endfor %}
     <div class="col-md-6">
         <label for="name" class="form-label">Name</label>
-        <input name="name" type="text" class="form-control" id="name">
+        <label class="form-label">{{name}}</label>
+        {% comment %} <input name="name" type="text" class="form-control" id="name"> {% endcomment %}
     </div>
-    <!-- <div class="col-md-6">
+    <div class="col-md-6">
         <label for="email" class="form-label">Email</label>
-        <input name="email" type="email" class="form-control" id="email">
-    </div> -->
+        <label class="form-label">{{email}}</label>
+        {% comment %} <input name="email" type="email" class="form-control" id="email"> {% endcomment %}
+    </div>
     <div class="col-md-6">
         <label for="phone" class="form-label">Phone Number</label>
-        <input name="phone" type="tel" class="form-control" id="phone">
+        <label class="form-label">{{phone}}</label>
+        {% comment %} <input name="phone" type="tel" class="form-control" id="phone"> {% endcomment %}
     </div>
     <div class="col-12">
         <label for="address" class="form-label">Address</label>

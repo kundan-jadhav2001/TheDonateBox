@@ -2,16 +2,18 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views import View
 from django.contrib import messages
-from .forms import LoginForm, RegistrationForm, CustomerForm
+
 from django.shortcuts import get_object_or_404
-from .models import Customer,userinfo
-import datetime
+from .models import userinfo
+# from pymongo import MongoClient
+# import datetime
 # client = MongoClient("mongodb://localhost:27017/")
 # import cloudinary.uploader
 
 # # Create your views here.
 # db = client.thedonatebox
 # collection = db.app_customer
+# userinfo = db.app_userinfo
           
 # cloudinary.config( 
 #   cloud_name = "dslbnwrre", 
@@ -23,7 +25,6 @@ def home(request):
     return render(request, 'home.html')
 
 def login(request):
-    print("inlogin")
     if request.method == "POST":
         print("post request")
         username = request.POST['username']
@@ -31,19 +32,16 @@ def login(request):
 
         try:
             usr = userinfo.objects.get(username=username)
-            print(usr)
             if usr.username==username and usr.password==password:
-                response = render(request, "donate.html")
-                response.set_cookie("username", form.username, 24*60*60)
+                response = render(request, "donate.html",{'name':usr.username,'email':usr.email,'phone':usr.phone})
+                response.set_cookie("username", usr.username, 24*60*60)
                 return response
         except Exception as e:
-            print(e)
-    form = LoginForm()
-    return render(request, 'login.html', {'form':form})
+            print("Exception : ",e)
+    return render(request, 'login.html',)
 
 
 def signup(request):
-    print("inside signup")
     if request.method == "POST":
         print("post method")
         username = request.POST['username']
@@ -53,18 +51,14 @@ def signup(request):
         password2 = request.POST['password2']
 
         if password1 == password2:
-            print("saving")
             try:
                 usr = userinfo(username = username, phone = phone, email = email, password = password1)
                 usr.save()
-                print("saved")
             except Exception as e:
                 print("Exception :  ",e)
-            form = LoginForm()
-            render(request, 'login.html', {'form':form})
+            render(request, 'login.html')
 
-    form = RegistrationForm()
-    return render(request, 'signup.html', {'form':form})
+    return render(request, 'signup.html')
 
 def logout(request):
     pass
@@ -124,16 +118,14 @@ def contact(request):
             #     request, "Your Form has been Submitted"
             # )
             reg.save()
-        return render(request, 'app/submitted.html', {'form': form})
+        return render(request, 'submitted.html', {'form': form,'messages':[]})
     else:
         try:
-            request.COOKIES['username']
-            form = CustomerForm()
-            return render(request, 'app/donate.html', {'form': form,})
+            username = request.COOKIES['username']
+            usr = userinfo.objects.get(username=username)
+            return render(request, 'donate.html',{"name":username,'email':usr.email,'phone':usr.phone,'messages':[]})
         except:
-            form = LoginForm()
-            return render(request, 'app/login.html', {'form':form})
-    
+            return render(request, 'login.html', {'form': form,'messages':[]})
     
 
 def forgotpass(request):

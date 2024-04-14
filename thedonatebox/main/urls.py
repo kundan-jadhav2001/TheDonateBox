@@ -13,8 +13,11 @@ urlpatterns = [
     path('accounts/logout/',views.logout, name='logout'),
     
     path('contact/', views.contact, name='contact'),
+
     path('forgotpass', views.forgotpass, name='forgotpass'),
     path('setnewpass', views.setnewpass, name='setnewpass'),
+
+    
 
     # path('submitted/', views.submit, name="submitted"),
 ]

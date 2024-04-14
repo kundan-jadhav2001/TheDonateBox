@@ -19,14 +19,18 @@
       <div class="signup">
         <hr class="sign-hr">
         <div class="form-content">
-            <form action="{% url 'login' %}" method="POST" novalidate class="form shadow p-5 custom-form-2">
-                
-                {% csrf_token %}
-                {% for f in form %}
+            <form action="{% url 'login' %}" method="POST" novalidate class="form shadow p-5 custom-form-2">{% csrf_token %}
+                {% comment %} {% for f in form %}
                 <div class="form-group">
                     {{f.label_tag}} {{f}} <small class="text-danger">{{f.errors|striptags}}</small> <br>
                 </div>
-                {% endfor %}
+                {% endfor %} {% endcomment %}
+                <div class="form-group">
+                  <label for='username'>Username</label>
+                  <input class='form-control' id="username" name='username'>
+                  <label for='password'>Password</label>
+                  <input class='form-control' id="password" name='password'>
+                </div>
                 <small><a href="forgotpass">Forgot Password?</a></small> <br>
 
                 <div>

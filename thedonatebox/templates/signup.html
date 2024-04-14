@@ -16,20 +16,33 @@
       <div class="signup">
         <hr class="sign-hr">
         <div class="form-content">
-            <form method="POST" class="form" action="/confsignup">
+            <form method="POST" class="form" action="{%url 'registration' %}">{% csrf_token %}
                 
-                {% if messages %}
+                {% comment %} {% if messages %}
             {% for message in messages %}
             <p {% if message.tags %} class="alert alert-{{message.tags}} mb-5 {% endif %}">{{ message }}: <a
                     href="{% url 'login' %}" class="btn btn-primary">Login</a></p>
             {% endfor %}
-            {% endif %}
-            {% csrf_token %}
-            {% for f in form %}
+            {% endif %} {% endcomment %}
+            
+            {% comment %} {% for f in form %}
             <div class="form-group mb-3">
                 {{f.label_tag}} {{f}} <small class="text-danger">{{f.errors|striptags}}</small>
             </div>
-            {% endfor %}
+            {% endfor %} {% endcomment %}
+
+            <label for='username'>Username</label>
+            <input class='form-control' id="username" name='username'>
+            <label for='email'>Email</label>
+            <input class='form-control' id="email" name='email'>
+            <label for='phone'>Phone</label>
+            <input class='form-control' id="phone" name='phone'>
+            <label for='password1'>Password</label>
+            <input class='form-control' id="password1" name='password1'>
+            <label for='password2'>Password</label>
+            <input class='form-control' id="password2" name='password2'>
+
+
             <input type="submit" value="Submit" class="btn btn-primary">
             <br>
             <div class="text-center text-primary fw-bold">
