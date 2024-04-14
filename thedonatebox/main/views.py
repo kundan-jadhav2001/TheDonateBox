@@ -20,7 +20,7 @@ import datetime
 # )
 
 def home(request):
-    return render(request, 'app/home.html')
+    return render(request, 'home.html')
 
 def login(request):
     print("inlogin")
@@ -33,13 +33,13 @@ def login(request):
             usr = userinfo.objects.get(username=username)
             print(usr)
             if usr.username==username and usr.password==password:
-                response = render(request, "app/donate.html")
+                response = render(request, "donate.html")
                 response.set_cookie("username", form.username, 24*60*60)
                 return response
         except Exception as e:
             print(e)
     form = LoginForm()
-    return render(request, 'app/login.html', {'form':form})
+    return render(request, 'login.html', {'form':form})
 
 
 def signup(request):
@@ -61,10 +61,10 @@ def signup(request):
             except Exception as e:
                 print("Exception :  ",e)
             form = LoginForm()
-            render(request, 'app/login.html', {'form':form})
+            render(request, 'login.html', {'form':form})
 
     form = RegistrationForm()
-    return render(request, 'app/signup.html', {'form':form})
+    return render(request, 'signup.html', {'form':form})
 
 def logout(request):
     pass
@@ -78,7 +78,7 @@ def AdminView(request):
         tempArr = []
         for i in data:
             tempArr.append(i)
-        return render(request,'app/customizedadmin.html',{"tempArr":tempArr})
+        return render(request,'customizedadmin.html',{"tempArr":tempArr})
 
     except KeyError:
         return render(request, 'index.html', {'msg':"Please Signin to check the predictions."})
