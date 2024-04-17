@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <title>Verify OTP</title>
+</head>
+
+<body>
+    <section class="container">
+        <h2>Verify OTP Form</h2>
+        <form method="POST" action="forgotpass">{% csrf_token %}
+            <p>{{email}}</p>
+            <label for="otp">OTP</label>
+            <input type="text" placeholder="Enter OTP" id="otp" name='otp'>
+            <button type="submit" class="btn-primary">Verify OTP</button>
+        </form>
+    </section>
+</body>
+
+</html>

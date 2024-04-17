@@ -4,22 +4,14 @@ from django.views import View
 from django.contrib import messages
 
 from django.shortcuts import get_object_or_404
-from .models import userinfo
-# from pymongo import MongoClient
-# import datetime
-# client = MongoClient("mongodb://localhost:27017/")
-# import cloudinary.uploader
+from .models import userinfo, contactinfo
+from random import randint
 
-# # Create your views here.
-# db = client.thedonatebox
-# collection = db.app_customer
-# userinfo = db.app_userinfo
-          
-# cloudinary.config( 
-#   cloud_name = "dslbnwrre", 
-#   api_key = "543599432364487", 
-#   api_secret = "aTumbr-nSvhAGJJLHbMxKCaC16Q" 
-# )
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
 
 def home(request):
     return render(request, 'home.html')
@@ -56,7 +48,7 @@ def signup(request):
                 usr.save()
             except Exception as e:
                 print("Exception :  ",e)
-            render(request, 'login.html')
+            return render(request, 'login.html')
 
     return render(request, 'signup.html')
 
@@ -67,147 +59,100 @@ def AdminView(request):
 
     try:
         username = request.COOKIES['username']
-        Customer.objects.get(user=username)
-        data = collection.find()
-        tempArr = []
-        for i in data:
-            tempArr.append(i)
-        return render(request,'customizedadmin.html',{"tempArr":tempArr})
-
-    except KeyError:
-        return render(request, 'index.html', {'msg':"Please Signin to check the predictions."})
+        _contact = contactinfo.objects.all()
+        data = []
+        for cont in _contact:
+            _usr = userinfo.objects.get(username=cont.name)
+            data.append({'username':cont.name,'phone':_usr.phone,'address':cont.address,'image':cont.image,'item':cont.item})
+        return render(request, "customizedadmin.html",{'tempArr':data, "range":range(len(_contact))})
+        
     except Exception as e:
         print(e)
-        return render(request, 'prediction/database.html', {'msg':"No data to show"})
-    return render(request, 'prediction/database.html', {'data':data})
+        usr = contactinfo.objects.all()
+        print(usr)
+        return render(request, "customizedadmin.html",{"tempArr":usr})
 
-
-    
-
-# class RegistrationView(View):
-#     def get(self, request):
-#         form = RegistrationForm()
-#         return render(request, 'app/signup.html', {'form': form})
-
-#     def post(self, request):
-#         form = RegistrationForm(request.POST)
-#         if form.is_valid():
-#             if form.password1 == form.password2:
-#                 # userinfo(username=form.username,phone=form.phone,email=form.email,password=form.password1).save()
-#                 messages.success(request, 'Successfully Registered. Please login to continue.')
-#             else:
-#                 messages.error(request, 'Password and Confirm password not matched...')
-#         return render(request, 'app/signup.html', {'form': form})
-    
 
 def contact(request):    
     if request.method == "POST":
-        form = CustomerForm(request.POST)
-        if form.is_valid():
-            # user = request.user
-            name = request.POST['name']
-            phone = request.POST['phone']
-            address = request.POST['address']
-            item = request.POST['item']
-            image = request.POST['image']
-            print(image)
-            upimage = cloudinary.uploader.upload("C:\\Users\\Fahad\\Desktop\\imgup\\"+image)
-            print(upimage)
-            reg = Customer(name=name, phone=phone, address=address, item=item, image=upimage['secure_url'])
-            # messages.success(
-            #     request, "Your Form has been Submitted"
-            # )
-            reg.save()
-        return render(request, 'submitted.html', {'form': form,'messages':[]})
+        address = request.POST['address']
+        item = request.POST['item']
+        
+        image = request.FILES['image']
+
+        print(image)
+        _contact = contactinfo(name=request.COOKIES['username'], address=address, item=item, image=image)
+        _contact.save()
+        return render(request, 'submitted.html', {})
     else:
         try:
             username = request.COOKIES['username']
             usr = userinfo.objects.get(username=username)
             return render(request, 'donate.html',{"name":username,'email':usr.email,'phone':usr.phone,'messages':[]})
         except:
-            return render(request, 'login.html', {'form': form,'messages':[]})
+            return render(request, 'login.html', {'messages':[]})
     
+
+
+def enterotp(request):
+    return render(request, "forgot-password.html")
 
 def forgotpass(request):
     if request.method == 'POST':
-        global otp, email
+        global otp,email
         try:
-
             entered_otp = request.POST['otp']
-            print('trying', entered_otp)
-            print(otp)
+            print("otp:",otp)
             if int(entered_otp) == int(otp):
-                return render(request, 'newpass.html')
+                return render(request, 'reset-password.html')
             else:
-                return render(request, 'forgotpass.html', {'msg':"OTP didn't matched", 'otp':''})
+                return render(request, 'verify-otp.html', {'msg':"OTP didn't matched", 'otp':''})
         except:
             otp = randint(100000, 999999)
             body = f'The OTP for password reset is {otp}'
             
-            with connection.cursor() as cursor:
-                try:
-                    email = request.POST["email"]
-                    cursor.execute("select name from userinfo where email = %s", [email])
-                    row = cursor.fetchone()
-                except Exception as e:
-                    return render(request, 'forgotpass.html',{'msg':"Error while connecting to database", 'otp':''})
+            
+            try:
+                email = request.POST["email"]
+                print(email)
+                row = userinfo.objects.get(email=email)
+            except Exception as e:
+                print(e)
+                return render(request, 'forgot-password.html',{'msg':"Error while connecting to database", 'otp':''})
 
             if row != None:
                 try:
-                    send_mail(
-                    'OTP',
-                    body,
-                    'kundanjadhav2001@gmail.com',
-                    [f'{request.POST["email"]}'],
-                    fail_silently=False,
-                    )
-                    return(render(request, "forgotpass.html",{'otp':otp}))
+                    my_email = "en20133485@git-india.edu.in"
+                    server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
+                    server.login(my_email, "xyz@8910")
+
+                    message = MIMEText(f"Your otp is {otp}")
+                    message["From"] = my_email
+                    message["To"] = email
+                    message["Subject"] = "Forgot passward OTP"
+                    
+                    server.sendmail(my_email, email, message.as_string())
+                    print("Email sent successfully!")
+
+
+                    print("otp sent ", otp)
+                    return(render(request, "verify-otp.html",{}))
                 except Exception as e:
                     print(e)
             else:
-                return render(request, 'forgotpass.html',{'msg':"Email not found in database. You don't have accound", 'otp':''})
-    return(render(request, "forgotpass.html", {'otp':''} ))
+                return render(request, 'forgot-password.html',{'msg':"Email not found in database. You don't have accound", 'otp':''})
+    return(render(request, "forgot-password.html" ))
     
 
 def setnewpass(request):
+    global email
     print(email)
     if request.method == "POST":
-        newpass = request.post['newpass']
-        with connection.cursor() as cursor:
-            cursor.execute(f"update userinfo set pass = {newpass} where email = {email};")
-            return render(request, 'login.html')
-    return render(request, 'forgotpass.html')
-
-
-
-
-# def contact(request):
-#     if request.method == 'POST':
-#         try:
-#             name = request.POST.get('name')
-#             email = request.POST.get('email')
-#             phone = request.POST.get('phone')
-#             address = request.POST.get('address')
-#             item = request.POST.get('item')
-
-#             input_data = {
-#             "name": name,
-#             "email": email,
-#             "phone": phone,
-#             "address":address,
-#             "item":item,
-#             "date": datetime.datetime.now(tz=datetime.timezone.utc),
-#             }
-#             collection.insert_one(input_data)
-#             messages.success(
-#                 request, 'Thank you for contacting us! We will soon contact you for further updates.'
-#             )
-#         except Exception as e:
-#                 request, 'Error'
-#                 print('something went wrong',e)
-            
-#         return render(request, 'app/donate.html')
-        
-#     return render(request, 'app/donate.html')
-
+        newpass = request.POST['pass1']
+        confnewpass = request.POST['pass2']
+        usr = userinfo.objects.get(email=email)
+        usr.password = newpass
+        usr.save()
+        return render(request, 'login.html', {'msg':'Password changed. Login with new password'})
+    return render(request, 'reset-password.html')
 

@@ -13,7 +13,7 @@
 {% block body %}
 <h1 class="login-header container my-4 text-center">Contact Us!</h1>
 
-<form class="row mx-5 container custom-form-2" method="POST" action="contact">{% csrf_token %}
+<form class="row mx-5 container custom-form-2" method="POST" action="{% url 'contact'%}" enctype="multipart/form-data">{% csrf_token %}
     {% for message in messages %}
     <p {% if message.tags %} class="alert alert-{{message.tags}} mb-5 {% endif %}">{{ message }}
     {% endfor %}

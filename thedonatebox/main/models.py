@@ -11,9 +11,9 @@ class userinfo(models.Model):
     password = models.CharField(max_length=200)
 
 
-class contact(models.Model):
-    name = models.ForeignKey(userinfo, on_delete=models.SET_NULL, null=True)
+class contactinfo(models.Model):
+    name = models.CharField(max_length=150)
     address = models.CharField(max_length=500)
     item = models.CharField(max_length=500)
-    image = models.ImageField(upload_to='images')
+    image = models.ImageField(upload_to='images/')
 
