@@ -55,7 +55,7 @@ def signup(request):
 def logout(request):
     pass
 
-def AdminView(request):
+def AdminView(request, msg=""):
 
     try:
         username = request.COOKIES['username']
@@ -63,14 +63,47 @@ def AdminView(request):
         data = []
         for cont in _contact:
             _usr = userinfo.objects.get(username=cont.name)
-            data.append({'username':cont.name,'phone':_usr.phone,'address':cont.address,'image':cont.image,'item':cont.item})
-        return render(request, "customizedadmin.html",{'tempArr':data, "range":range(len(_contact))})
+            data.append({'username':cont.name,'phone':_usr.phone,'address':cont.address,'image':cont.image,'item':cont.item, 'email':_usr.email})
+        return render(request, "customizedadmin.html",{'tempArr':data, "range":range(len(_contact)),"msg":msg})
         
     except Exception as e:
-        print(e)
-        usr = contactinfo.objects.all()
-        print(usr)
-        return render(request, "customizedadmin.html",{"tempArr":usr})
+        print("exception :  ", e)
+        return render(request, "customizedadmin.html",{"msg":"Please Login to see the Admin page"})
+
+
+def acceptitem(request):
+    item = "null"
+    if request.method == "POST":
+        item = request.POST["item"]
+        email = request.POST["email"]
+
+        try:
+            my_email = "en20133485@git-india.edu.in"
+            server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
+            server.login(my_email, "xyz@8910")
+
+            message = MIMEText(f"Your item '{item}' accepted successfully")
+            message["From"] = my_email
+            message["To"] = email
+            message["Subject"] = "About Item"
+            
+            server.sendmail(my_email, email, message.as_string())
+            print("Email sent successfully!")
+
+            return AdminView(request,msg="Item {item} accepted successfully")
+        except Exception as e:
+            print(e)
+            return render(request, "home.html")
+
+
+
+
+
+
+        
+    
+
+    
 
 
 def contact(request):    

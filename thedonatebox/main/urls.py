@@ -16,6 +16,7 @@ urlpatterns = [
 
     path('forgotpass', views.forgotpass, name='forgotpass'),
     path('setnewpass', views.setnewpass, name='setnewpass'),
+    path("acceptitem", views.acceptitem, name="acceptitem")
 
     
 

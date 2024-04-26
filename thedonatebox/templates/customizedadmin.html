@@ -9,26 +9,40 @@
 <body>
     <h1>Admin Panel</h1>
     {% for data in tempArr %}
-    <div class="card_container">
-            <div class="card">
-                    <div>
-                        <img src='media/{{data.image}}' style="width: 30%; height: auto;"/>
+        <form action="{% url 'acceptitem'%}" method="post">{% csrf_token %}
+            <div class="card_container">
+                    <div class="card">
+                            <div>
+                                <img src='media/{{data.image}}' style="width: 30%; height: auto;"/>
+                            </div>
                     </div>
-            </div>
-            <div class="content">
-                <div>
-                    <h2>{{data.name}}</h2>
-                </div>
-                <div>
-                    <p>{{data.address}}</p>
-                </div>
-                <div>
-                    <p>{{data.phone}}</p>
-                </div>
-                
-            </div>
+                    <div class="content">
+                        <div>
+                            <h2>Username : {{data.username}}</h2>
+                        </div>
+                        <div>
+                            <input style="visibility: hidden;" value={{data.email}} name="email">
+                            <p>Email : {{data.email}}</p>
+                        </div>
+                        <div>
+                            <p>Address : {{data.address}}</p>
+                        </div>
+                        <div>
+                            <p>Phone : {{data.phone}}</p>
+                        </div>
+                        <div>
+                            <p>Item details : {{data.item}}</p>
+                        </div>
+                        <div>
+                            <button type="submit">Accept</button>
+                            <input style="visibility: hidden;" value={{data.item}} name="item">
+                        </div>
 
-    </div>
+                    </div>
+                    <br>
+
+            </div>
+        </form>
     {% endfor %}
 </body>
 </html>
